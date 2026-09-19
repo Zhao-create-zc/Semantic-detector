@@ -5,6 +5,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
+import platform
 import shutil
 import subprocess
 import sys
@@ -13,6 +15,7 @@ from datetime import date
 from pathlib import Path
 
 from scripts.benchmarks.pcap_protocol_to_jsonl import convert_pcap
+from semantic_detector import __version__ as semantic_detector_version
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CATALOG = ROOT / "benchmarks" / "public_sources.json"
@@ -64,6 +67,10 @@ def _write_report(source_id: str, source: dict[str, object], work_dir: Path, man
 - Upstream: {source['upstream_home']}
 - Pinned commit: `{source['source_commit']}`
 - Upstream path: `{source['source_path']}`
+- Upstream blob SHA-1: `{source['git_blob_sha1']}`
+- Semantic Detector version: `{manifest['software']['semantic_detector_version']}`
+- Semantic Detector commit: `{manifest['software']['git_commit']}`
+- Python: `{manifest['software']['python_version']}`
 - License/terms: {source['license_or_terms']}
 - Downloaded SHA-256: `{manifest['dataset']['sha256']}`
 - Converted messages: {manifest['input']['message_count']}
@@ -137,6 +144,10 @@ def run_benchmark(source_id: str, work_dir: Path, catalog_path: Path = DEFAULT_C
             "sha256": source_sha256,
             "redistributable": False,
             "notes": source["notes"],
+            "upstream_repo": source["source_repo"],
+            "upstream_commit": source["source_commit"],
+            "upstream_path": source["source_path"],
+            "git_blob_sha1": source["git_blob_sha1"],
         },
         "input": {
             "messages_jsonl": str(messages_path.relative_to(work_dir)),
@@ -151,6 +162,12 @@ def run_benchmark(source_id: str, work_dir: Path, catalog_path: Path = DEFAULT_C
         "config": {
             "file": str(config_path.relative_to(work_dir)),
             "sha256": sha256_file(config_path),
+        },
+        "software": {
+            "semantic_detector_version": semantic_detector_version,
+            "git_commit": os.environ.get("GITHUB_SHA"),
+            "python_version": platform.python_version(),
+            "github_run_id": os.environ.get("GITHUB_RUN_ID"),
         },
         "reporting": {
             "required_metrics": [

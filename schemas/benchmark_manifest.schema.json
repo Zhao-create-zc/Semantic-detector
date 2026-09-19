@@ -69,6 +69,32 @@
             "string",
             "null"
           ]
+        },
+        "upstream_repo": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "upstream_commit": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-fA-F]{40}$"
+        },
+        "upstream_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "git_blob_sha1": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-fA-F]{40}$"
         }
       }
     },
@@ -156,6 +182,38 @@
         },
         "error_analysis": {
           "type": "boolean"
+        }
+      }
+    },
+    "software": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_detector_version",
+        "git_commit",
+        "python_version"
+      ],
+      "properties": {
+        "semantic_detector_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "git_commit": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-fA-F]{40}$"
+        },
+        "python_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "github_run_id": {
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
     }

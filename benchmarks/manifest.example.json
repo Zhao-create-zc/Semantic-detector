@@ -9,7 +9,11 @@
     "retrieved_at": "2026-09-19",
     "sha256": null,
     "redistributable": false,
-    "notes": "Template only; do not report results from this manifest."
+    "notes": "Template only; do not report results from this manifest.",
+    "upstream_repo": null,
+    "upstream_commit": null,
+    "upstream_path": null,
+    "git_blob_sha1": null
   },
   "input": {
     "messages_jsonl": "messages.jsonl",
@@ -35,5 +39,11 @@
       "macro_f1"
     ],
     "error_analysis": true
+  },
+  "software": {
+    "semantic_detector_version": "0.1.0",
+    "git_commit": null,
+    "python_version": "3.12.0",
+    "github_run_id": null
   }
 }
