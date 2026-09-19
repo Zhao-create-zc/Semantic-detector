@@ -18,3 +18,14 @@ Each result directory contains:
 - `confusion_matrix.csv` — truth/prediction matrix
 - `errors.jsonl` — concrete wrong-label/abstention cases
 - `REPORT.md` — human-readable smoke report
+
+## Compare a new run to the baseline
+
+```bash
+python -m scripts.benchmarks.compare_metrics \
+  benchmarks/results/iti-modbus-smoke-v1/metrics.json \
+  benchmark-output/iti-modbus-smoke-v1/run/metrics.json \
+  --markdown-out benchmark-output/iti-modbus-smoke-v1/BASELINE_COMPARISON.md
+```
+
+The comparison classifies each core metric as `improved`, `regressed`, or `unchanged`. It is descriptive by default; use `--fail-on-regression` only when a specific CI policy genuinely requires it.

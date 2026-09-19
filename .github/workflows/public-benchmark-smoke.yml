@@ -49,6 +49,15 @@ jobs:
           python -m scripts.benchmarks.run_public_benchmark \
             "${{ matrix.source }}" \
             --work-dir "benchmark-output/${{ matrix.source }}"
+      - name: Compare with committed baseline
+        run: |
+          baseline="benchmarks/results/${{ matrix.source }}/metrics.json"
+          candidate="benchmark-output/${{ matrix.source }}/run/metrics.json"
+          if [ -f "$baseline" ]; then
+            python -m scripts.benchmarks.compare_metrics               "$baseline" "$candidate"               --json-out "benchmark-output/${{ matrix.source }}/baseline_comparison.json"               --markdown-out "benchmark-output/${{ matrix.source }}/BASELINE_COMPARISON.md"               --title "${{ matrix.source }} baseline comparison"
+          else
+            echo "No committed baseline yet for ${{ matrix.source }}"
+          fi
       - name: Validate benchmark manifest schema
         run: |
           python - <<'PY'

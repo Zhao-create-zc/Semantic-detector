@@ -45,3 +45,17 @@ python -m semantic_detector.cli run benchmark/messages.jsonl \
 python -m semantic_detector.cli evaluate \
   benchmark/out/predictions.jsonl benchmark/ground_truth.jsonl
 ```
+
+## 6. Baseline comparison
+
+For iterative detector work, compare a candidate run against a committed pinned baseline rather than relying on memory or demo output:
+
+```bash
+python -m scripts.benchmarks.compare_metrics \
+  benchmarks/results/iti-dnp3-smoke-v1/metrics.json \
+  benchmark-output/iti-dnp3-smoke-v1/run/metrics.json \
+  --json-out benchmark-output/iti-dnp3-smoke-v1/baseline_comparison.json \
+  --markdown-out benchmark-output/iti-dnp3-smoke-v1/BASELINE_COMPARISON.md
+```
+
+The comparison reports accuracy, coverage, unknown rate, covered accuracy, fine top-1 accuracy, macro F1, and error-count deltas. A better scalar metric does not by itself prove a better model; inspect the error cases and per-label effects before accepting a change.
