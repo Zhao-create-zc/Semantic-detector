@@ -1,6 +1,6 @@
-# Demo 布局与固定标签清单 (R296)
+# Demo 布局与固定标签清单
 
-**设计轮次**: R296（R297-R301 实施数据微调，本文档已同步实际产物）
+**设计说明**: （ 实施数据微调，本文档已同步实际产物）
 **设计原则**: 每个 FieldKey 至少 8 样本，truth 先固定，覆盖全部 9 个标准粗粒度标签
 
 ---
@@ -30,7 +30,7 @@
 | 2 | 5 | 9 | 4 | sequence_or_counter | BE 严格递增序列号 |
 | 3 | 9 | 变长 | 变长 | string | ASCII 用户名（printable >= 0.85） |
 | 4 | 变长 | 变长 | 变长 | string | ASCII 密码（printable >= 0.85） |
-| 5 | 变长 | 变长 | 变长 | unknown | 随机字节（无规律，R301 新增用于覆盖 unknown 标签） |
+| 5 | 变长 | 变长 | 变长 | unknown | 随机字节（无规律， 新增用于覆盖 unknown 标签） |
 
 ### 2.2 data_request (request, 4 字段)
 
@@ -45,7 +45,7 @@
 
 | field_index | start | end | width | 标签 | 说明 |
 |-------------|-------|-----|-------|------|------|
-| 0 | 0 | 1 | 1 | constant | 固定 0x03（R297 调整为 constant 以覆盖第二个 constant 标签） |
+| 0 | 0 | 1 | 1 | constant | 固定 0x03（ 调整为 constant 以覆盖第二个 constant 标签） |
 | 1 | 1 | 5 | 4 | length | BE message_length |
 | 2 | 5 | 9 | 4 | timestamp | BE Unix 秒（capture_time 自然递增） |
 | 3 | 9 | 变长 | 变长 | payload | 二进制数据 |
@@ -65,7 +65,7 @@
 | 0 | 0 | 1 | 1 | type_control | 固定 0x05 |
 | 1 | 1 | 5 | 4 | length | BE message_length |
 | 2 | 5 | 9 | 4 | identifier | token ID（非严格递增，有重复，soft 候选） |
-| 3 | 9 | 13 | 4 | payload | 二进制数据（R301 调整为 payload 以覆盖第三个 payload 标签） |
+| 3 | 9 | 13 | 4 | payload | 二进制数据（ 调整为 payload 以覆盖第三个 payload 标签） |
 
 ---
 
@@ -140,10 +140,10 @@ type_control alignment_key = (request, field_index=0, width=1)
 | 冲突类型 | 场景 | 期望结果 |
 |----------|------|----------|
 | length-vs-sequence | (login_request, request, 1) length 和 (login_request, request, 2) sequence 不在同一 FieldKey | 无冲突（不同字段） |
-| timestamp-vs-sequence | (data_response, response, 2) timestamp 值严格递增，可能触发 sequence | timestamp 胜出（R289） |
+| timestamp-vs-sequence | (data_response, response, 2) timestamp 值严格递增，可能触发 sequence | timestamp 胜出（） |
 | constant-vs-string | heartbeat constant 与 login_request string 不在同一 FieldKey | 无冲突（不同字段） |
 
-注：冲突规则在同一 FieldKey 的多个候选之间触发。本 Demo 设计中，timestamp 字段的值严格递增会同时触发 TimestampDetector 和 SequenceDetector，验证 R289 timestamp-vs-sequence 冲突规则。
+注：冲突规则在同一 FieldKey 的多个候选之间触发。本 Demo 设计中，timestamp 字段的值严格递增会同时触发 TimestampDetector 和 SequenceDetector，验证  timestamp-vs-sequence 冲突规则。
 
 ---
 
@@ -157,17 +157,3 @@ type_control alignment_key = (request, field_index=0, width=1)
 6. **unknown 随机**: auth_token field 3 使用随机字节，无任何规律
 7. **type_control 固定**: 每个 layout 的 field 0 在该 layout 内固定值
 
----
-
-## 八、后续轮次计划
-
-| 轮次 | 任务 |
-|------|------|
-| R297 | 重建 examples/messages.jsonl 的 length/constant/sequence layout |
-| R298 | 增加 string layout |
-| R299 | 增加 timestamp layout 和 capture_time |
-| R300 | 增加跨 layout type_control 样本 |
-| R301 | 增加 payload/identifier soft 候选和一个 unknown |
-| R302 | 创建完整 examples/ground_truth.jsonl |
-| R303 | 更新 examples/config.json |
-| R304 | 修改 run_demo.ps1 串联 run 和 evaluate |

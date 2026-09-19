@@ -2,7 +2,7 @@
 
 本文档描述语义检测器使用的语义分类体系，与 [taxonomy.py](../src/semantic_detector/taxonomy.py) 和各检测器源码保持一致。
 
-> R311 更新：9 个标准粗粒度标签与 candidate 状态拆分（candidate 状态由 `fine_label` 表达，不混入 `coarse_label`）；旧标签映射表；删除已废弃的 `total_length` / `remaining_length` / `utf8_string` / `ambiguous` 粗粒度标签。
+>  更新：9 个标准粗粒度标签与 candidate 状态拆分（candidate 状态由 `fine_label` 表达，不混入 `coarse_label`）；旧标签映射表；删除已废弃的 `total_length` / `remaining_length` / `utf8_string` / `ambiguous` 粗粒度标签。
 
 ---
 
@@ -50,7 +50,7 @@ CANONICAL_COARSE_LABELS = (
   - `exact_support` 达阈值（offset=0，值等于 message_length 或 remaining_bytes）或
   - `offset_support` 达阈值（offset≠0，值等于 message_length ± offset 或 remaining_bytes ± offset）
   - `distinct_value_count >= 2`（教程 8.4，防止常量字段被误判）
-  - HIGH-7 修复（R276-R279）：使用精确等式支持率，不再使用 Pearson correlation
+  -  修复：使用精确等式支持率，不再使用 Pearson correlation
 - **fine_label**：
   - `total_message_length`（值等于消息总长度）
   - `remaining_bytes`（值等于剩余字节数）
@@ -64,7 +64,7 @@ CANONICAL_COARSE_LABELS = (
 - **命中条件**：
   - `timestamp_*_support` 达阈值（4 字节 Unix 秒/NTP 秒，8 字节 Unix 毫秒/微秒，BE/LE 独立）
   - `capture_time_count > 0` 且 `capture_time_coverage` 充足（教程 9.4，不兜底系统时间）
-  - HIGH-4 修复（R280-R282）：直接读取 profile 的 support 字段
+  -  修复：直接读取 profile 的 support 字段
 - **fine_label** 格式：`{format}_{endian}`，如 `unix_seconds_be`、`unix_milliseconds_le`
 - **支持的 format**：`unix_seconds` / `unix_milliseconds` / `unix_microseconds` / `ntp_seconds`
 - **支持的 endian**：`be` / `le`
@@ -82,7 +82,7 @@ CANONICAL_COARSE_LABELS = (
 - **fine_label** 格式：`sequence_{bit_width}bit_{endian}`，如 `sequence_32bit_be`、`sequence_16bit_le`
 - **reason_code**：`strictly_increasing_sequence` 等
 - **典型场景**：消息序列号、请求 ID、事务 ID
-- **冲突规则**（HIGH-6，R288/R289）：与 length/timestamp 同时命中时，length/timestamp 胜出，sequence_or_counter 进入 alternatives
+- **冲突规则**（，）：与 length/timestamp 同时命中时，length/timestamp 胜出，sequence_or_counter 进入 alternatives
 
 ### 5. string（字符串）
 
@@ -97,7 +97,7 @@ CANONICAL_COARSE_LABELS = (
   - `utf8_string`（UTF-8 可解码）
 - **reason_code**：`ascii_string_detected` / `utf8_string_detected`
 - **典型场景**：用户名、消息内容、文件名
-- **冲突规则**（HIGH-6，R290）：与 constant 同时命中时，按宽度和 printable_ratio 选择（宽度>1 且 printable>=0.85 时 string 胜出，否则 constant 胜出）
+- **冲突规则**（，）：与 constant 同时命中时，按宽度和 printable_ratio 选择（宽度>1 且 printable>=0.85 时 string 胜出，否则 constant 胜出）
 
 ### 6. identifier（标识符）
 
@@ -120,10 +120,10 @@ CANONICAL_COARSE_LABELS = (
   - 至少两个不同主值
   - 宽度不超过 2
   - 同一 layout 只贡献一个真实主值
-- **强证据排除**（教程 10.5，R284/R297）：length 或 timestamp 强证据不得被 type/opcode 覆盖；constant 等可被升级
+- **强证据排除**（教程 10.5，）：length 或 timestamp 强证据不得被 type/opcode 覆盖；constant 等可被升级
 - **fine_label**：`type_or_opcode_candidate`（candidate 状态由 fine_label 表达）
 - **reason_code**：`one_to_one_mapping`
-- **details 必填键**（教程 10.4，R284）：`layout_values` / `layout_count` / `unique_value_count` / `alignment_key`
+- **details 必填键**（教程 10.4，）：`layout_values` / `layout_count` / `unique_value_count` / `alignment_key`
 - **典型场景**：操作码、状态码、消息类型标识
 
 ### 8. payload（载荷）
@@ -167,7 +167,7 @@ CANONICAL_COARSE_LABELS = (
 
 **注意**：
 - `identifier_candidate`、`opaque_payload_candidate`、`type_or_opcode_candidate` 是 **fine_label**，不是粗粒度标签。对应的 `coarse_label` 分别是 `identifier`、`payload`、`type_control`。
-- 旧文档可能误将 `identifier_candidate` / `type_opcode` 当作粗粒度标签，这是错误的。R235 已通过 `CANONICAL_COARSE_LABELS` 集中修正。
+- 旧文档可能误将 `identifier_candidate` / `type_opcode` 当作粗粒度标签，这是错误的。 已通过 `CANONICAL_COARSE_LABELS` 集中修正。
 
 ---
 
@@ -187,7 +187,7 @@ CANONICAL_COARSE_LABELS = (
 | `type_or_opcode_candidate` | `type_control` | fine_label 误用为 coarse_label |
 | `type` | `type_control` | 旧简称 |
 | `opcode` | `type_control` | 旧简称 |
-| `sequence` | `sequence_or_counter` | 旧简称（R287 修正 resolver） |
+| `sequence` | `sequence_or_counter` | 旧简称（ 修正 resolver） |
 | `counter` | `sequence_or_counter` | 旧简称 |
 
 ### 已废弃的粗粒度标签（不再是 coarse_label）
@@ -226,7 +226,7 @@ PREDICTION_STATUSES = ("confirmed", "candidate", "abstained")
 
 ## 六、Resolver 冲突规则与解析顺序
 
-来源：[resolver.py](../src/semantic_detector/scoring/resolver.py) `resolve_with_context`。HIGH-6 修复（R287-R295）。
+来源：[resolver.py](../src/semantic_detector/scoring/resolver.py) `resolve_with_context`。 修复。
 
 ### 正确解析顺序（教程 11.2）
 
@@ -234,14 +234,14 @@ PREDICTION_STATUSES = ("confirmed", "candidate", "abstained")
 2. 删除 abstain 占位（resolver unknown 占位不参与选择）
 3. 规范化旧标签（`normalize_legacy_label`，仅读取历史产物时）
 4. 执行专项冲突规则（教程 11.3）：
-   - length vs sequence_or_counter → length 胜出（R288）
-   - timestamp vs sequence_or_counter → timestamp 胜出（R289）
-   - constant vs string → 按宽度/printable_ratio 选择（R290）
-5. hard 优先（教程 11.2 第 5 步 / 11.4，R291）：有 hard evidence 时直接选最高分 hard，不走 ambiguity
+   - length vs sequence_or_counter → length 胜出
+   - timestamp vs sequence_or_counter → timestamp 胜出
+   - constant vs string → 按宽度/printable_ratio 选择
+5. hard 优先（教程 11.2 第 5 步 / 11.4，）：有 hard evidence 时直接选最高分 hard，不走 ambiguity
 6. 同等级按 score 降序排序（`select_best_candidate`）
 7. ambiguity 检查（教程 11.4，仅在只有 soft 候选时）：同分差 < `ambiguity_margin` 时输出 unknown(abstained)
 8. 无候选输出 unknown（`prediction_status="abstained"`）
-9. 保留 alternatives（R292）：候选列表 = [primary] + alternatives，按分数降序，primary 在第一位
+9. 保留 alternatives：候选列表 = [primary] + alternatives，按分数降序，primary 在第一位
 
 **关键约束**（教程 11.4）：ambiguity 检查必须在专项冲突规则和 hard 优先之后，否则 length=1.0/sequence=1.0 直接 unknown 导致领域规则失效。
 
@@ -298,7 +298,7 @@ coarse_label（9 个标准粗粒度标签）
 
 ## 八、版本控制
 
-语义分类体系版本: 2.0.0（R311 更新，对应 R221-R309 修复后的实际实现）
+语义分类体系版本: 2.0.0（ 更新，对应  修复后的实际实现）
 
 变更时需要：
 1. 更新版本号

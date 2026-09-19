@@ -34,3 +34,7 @@ python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = "-v --tb=short"
+[project.urls]
+Homepage = "https://github.com/Zhao-create-zc/Semantic-detector"
+Repository = "https://github.com/Zhao-create-zc/Semantic-detector"
+Issues = "https://github.com/Zhao-create-zc/Semantic-detector/issues"

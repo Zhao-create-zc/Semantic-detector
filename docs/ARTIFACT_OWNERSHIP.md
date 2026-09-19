@@ -2,11 +2,11 @@
 
 ## 目的
 
-R388：明确 `validate` / `profile` / `infer` / `run` / `evaluate` 五个 CLI 子命令各自负责的输出文件清单。
+：明确 `validate` / `profile` / `infer` / `run` / `evaluate` 五个 CLI 子命令各自负责的输出文件清单。
 
 本清单是命令产物清理、原子写入和审计追溯的权威依据：
 
-- **命令开始前**：`artifact_manager.clean_command_artifacts(output_dir, command)` 只删除本命令拥有的旧产物，避免旧成功产物残留（HIGH-4 修复）
+- **命令开始前**：`artifact_manager.clean_command_artifacts(output_dir, command)` 只删除本命令拥有的旧产物，避免旧成功产物残留（ 修复）
 - **命令结束时**：每个产物用原子写入（`atomic_write_jsonl/json/csv/text`），失败时写空文件或失败 Manifest
 - **命令之间**：一个命令不清理其他命令的产物（避免误删）
 - **用户输入**：输入文件（`input.jsonl` / `ground_truth.json` 等）不在任何命令的所有权清单中，永不被清理
@@ -29,7 +29,7 @@ R388：明确 `validate` / `profile` / `infer` / `run` / `evaluate` 五个 CLI �
 | 文件 | 说明 | CLI 当前是否产生 |
 |------|------|----------------|
 | `field_profiles.jsonl` | 字段画像 | 是 |
-| `rejected.jsonl` | JSON 级拒绝记录（R385 修复后产生） | 是 |
+| `rejected.jsonl` | JSON 级拒绝记录（ 修复后产生） | 是 |
 | `rejected_groups.jsonl` | 组级拒绝记录 | 是 |
 | `profile.log` | profile 命令日志 | 否（声明所有权，预留扩展） |
 | `profile_manifest.json` | profile 命令 Manifest | 否（声明所有权，预留扩展） |
@@ -73,7 +73,7 @@ R388：明确 `validate` / `profile` / `infer` / `run` / `evaluate` 五个 CLI �
 4. **声明所有权 vs 实际产生**：即使 CLI 当前不产生某文件（如 `validate.log`），所有权声明仍有效，以便未来扩展或清理用户手动放置的文件
 5. **共享文件的所有权**：`predictions.jsonl` 同时被 `infer` 和 `run` 拥有，任一命令运行时都会清理它（设计意图：重新生成）
 
-## 失败运行的产物策略（R389-R390）
+## 失败运行的产物策略
 
 ### run 命令失败时
 
@@ -92,11 +92,7 @@ R388：明确 `validate` / `profile` / `infer` / `run` / `evaluate` 五个 CLI �
 ## 相关文件
 
 - `src/semantic_detector/io/artifact_manager.py`：产物所有权清单和原子写入实现
-- `tests/unit/test_artifact_manager.py`：R388 所有权清单测试
-- `tests/unit/test_atomic_write.py`：R351 原子写入测试
-- `tests/integration/test_run_artifact_freshness.py`：R387 失败重复 Run 产物残留测试
+- `tests/unit/test_artifact_manager.py`： 所有权清单测试
+- `tests/unit/test_atomic_write.py`： 原子写入测试
+- `tests/integration/test_run_artifact_freshness.py`： 失败重复 Run 产物残留测试
 
-## 变更历史
-
-- R351：建立 COMMAND_ARTIFACTS 初版（validate/profile/infer/run/evaluate 基础清单）
-- R388：完善清单，补充 validate.log / profile.log / profile_manifest.json / infer.log / infer_manifest.json / evaluation_manifest.json 所有权声明

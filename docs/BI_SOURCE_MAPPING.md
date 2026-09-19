@@ -2,7 +2,7 @@
 
 本文档记录所有从 BinaryInferno 项目复制和适配的源码文件，包括来源路径、改动说明和许可证信息。
 
-> R314 更新：补充 length/timestamp 修复（HIGH-7 / HIGH-4）所用适配函数的来源与修改记录，与 [bi_adapted/](../src/semantic_detector/bi_adapted) 实际代码逐项对照。
+>  更新：补充 length/timestamp 修复（ / ）所用适配函数的来源与修改记录，与 [bi_adapted/](../src/semantic_detector/bi_adapted) 实际代码逐项对照。
 
 ---
 
@@ -59,10 +59,10 @@ BinaryInferno 源码采用 **GNU General Public License v3.0 (GPLv3)** 许可证
 - `calculate_offset_message_length_support(field_values, message_lengths)`：value + offset == message_length 支持率（统一偏移）
 - `calculate_offset_remaining_bytes_support(field_values, remaining_bytes)`：value + offset == remaining_bytes 支持率（统一偏移）
 
-**用途（HIGH-7 length 修复，R266/R267/R276）**：
-- R266：[profile_builder.py](../src/semantic_detector/profiling/profile_builder.py) 接入 `calculate_message_length_support` / `calculate_remaining_bytes_support` / `calculate_offset_*_support`，计算 BE 精确长度关系支持率（`numeric_be_message_length_exact_support` 等 6 个字段）
-- R267：对称增加 LE 精确长度关系支持率（`numeric_le_*` 6 个字段）
-- R276：[length.py](../src/semantic_detector/detectors/length.py) `LengthDetector` 重写，**使用 `exact_support` / `offset_support` 替代 Pearson correlation**（HIGH-7 修复核心），新增 `distinct_value_count >= 2` 前置条件（教程 8.4，防止常量字段被误判）
+**用途（ length 修复，）**：
+- ：[profile_builder.py](../src/semantic_detector/profiling/profile_builder.py) 接入 `calculate_message_length_support` / `calculate_remaining_bytes_support` / `calculate_offset_*_support`，计算 BE 精确长度关系支持率（`numeric_be_message_length_exact_support` 等 6 个字段）
+- ：对称增加 LE 精确长度关系支持率（`numeric_le_*` 6 个字段）
+- ：[length.py](../src/semantic_detector/detectors/length.py) `LengthDetector` 重写，**使用 `exact_support` / `offset_support` 替代 Pearson correlation**（ 核心实现），新增 `distinct_value_count >= 2` 前置条件（教程 8.4，防止常量字段被误判）
 
 **关键设计**：
 - 只接受**统一偏移**（所有样本使用相同 offset），不支持每样本独立偏移
@@ -119,11 +119,11 @@ BinaryInferno 源码采用 **GNU General Public License v3.0 (GPLv3)** 许可证
 - `calculate_unix_microseconds_support(...)`：Unix 微秒支持率
 - `calculate_ntp_seconds_support(...)`：NTP 秒支持率（NTP 纪元偏移 2208988800）
 
-**用途（HIGH-4 timestamp 修复，R271-R273/R280）**：
-- R271：[profile_builder.py](../src/semantic_detector/profiling/profile_builder.py) 接入 `calculate_unix_seconds_support`，计算 4 字节 Unix 秒 BE/LE support（`timestamp_be_unix_seconds_support` / `timestamp_le_unix_seconds_support`）
-- R272：新增 `calculate_unix_milliseconds_support` 和 `calculate_unix_microseconds_support`，计算 8 字节毫秒/微秒 BE/LE support
-- R273：新增 `calculate_ntp_seconds_support`，计算 4 字节 NTP 秒 BE/LE support（NTP 纪元 1900）
-- R280：[timestamp.py](../src/semantic_detector/detectors/timestamp.py) `TimestampDetector` 重写，**移除 bi_adapted.timestamp_range imports 和所有 `_calculate_*_support` 辅助方法**，直接读取 profile 的 support 字段（HIGH-4 修复核心），新增 `capture_time_min/max` 检查（教程 9.4 不兜底系统时间）
+**用途（ timestamp 修复，）**：
+- ：[profile_builder.py](../src/semantic_detector/profiling/profile_builder.py) 接入 `calculate_unix_seconds_support`，计算 4 字节 Unix 秒 BE/LE support（`timestamp_be_unix_seconds_support` / `timestamp_le_unix_seconds_support`）
+- ：新增 `calculate_unix_milliseconds_support` 和 `calculate_unix_microseconds_support`，计算 8 字节毫秒/微秒 BE/LE support
+- ：新增 `calculate_ntp_seconds_support`，计算 4 字节 NTP 秒 BE/LE support（NTP 纪元 1900）
+- ：[timestamp.py](../src/semantic_detector/detectors/timestamp.py) `TimestampDetector` 重写，**移除 bi_adapted.timestamp_range imports 和所有 `_calculate_*_support` 辅助方法**，直接读取 profile 的 support 字段（ 核心实现），新增 `capture_time_min/max` 检查（教程 9.4 不兜底系统时间）
 
 **关键设计**：
 - 时间范围全 None 时返回 0.0（教程 9.4，**不兜底系统时间**）
@@ -150,9 +150,9 @@ BinaryInferno 源码采用 **GNU General Public License v3.0 (GPLv3)** 许可证
 | 文件 | 源行数 | 目标行数 | 改动类型 | HIGH 修复关联 |
 |------|--------|----------|----------|---------------|
 | entropy.py | ~30 | ~43 | 剥离 BI 依赖，纯函数 | - |
-| length_relations.py | ~200 | ~285 | 统一 1~4 字节、字段边界感知、统一偏移 | HIGH-7 (R266/R267/R276) |
+| length_relations.py | ~200 | ~285 | 统一 1~4 字节、字段边界感知、统一偏移 |  () |
 | sequence_heuristic.py | ~80 | ~122 | 安全检查、类型注解、移除 print | - |
-| timestamp_range.py | ~150 | ~309 | 纯函数、字段边界感知、4 种时间戳格式 | HIGH-4 (R271-R273/R280) |
+| timestamp_range.py | ~150 | ~309 | 纯函数、字段边界感知、4 种时间戳格式 |  () |
 | __init__.py | 0 | 0 | 新建空文件 | - |
 
 **总计**: 4 个文件从 BinaryInferno 复制并适配，1 个文件新创建。
@@ -174,11 +174,11 @@ BinaryInferno 源码采用 **GNU General Public License v3.0 (GPLv3)** 许可证
 
 ---
 
-## 五、HIGH 修复关联说明
+## 五、关键实现说明
 
-### HIGH-7 length 用 Pearson correlation 冒充精确等式
+###  length 用 Pearson correlation 冒充精确等式
 
-**修复轮次**：R276-R279
+
 
 **使用的适配函数**：[length_relations.py](../src/semantic_detector/bi_adapted/length_relations.py)
 - `calculate_message_length_support`：精确等式支持率（offset=0）
@@ -187,13 +187,13 @@ BinaryInferno 源码采用 **GNU General Public License v3.0 (GPLv3)** 许可证
 - `calculate_offset_remaining_bytes_support`：统一偏移支持率（offset≠0）
 
 **修复内容**：
-- R266/R267：profile_builder.py 接入上述函数，计算 BE/LE 精确长度关系支持率（12 个字段）
-- R276：LengthDetector.detect 重写，使用 `exact_support` / `offset_support` 替代 Pearson correlation
-- R277-R279：增加负例测试（高相关但非等式、常量字段、单值字段、变宽字段、单字节端序折叠）
+- ：profile_builder.py 接入上述函数，计算 BE/LE 精确长度关系支持率（12 个字段）
+- ：LengthDetector.detect 重写，使用 `exact_support` / `offset_support` 替代 Pearson correlation
+- ：增加负例测试（高相关但非等式、常量字段、单值字段、变宽字段、单字节端序折叠）
 
-### HIGH-4 timestamp 检测器未接入真实流水线
+###  timestamp 检测器未接入真实流水线
 
-**修复轮次**：R280-R282
+
 
 **使用的适配函数**：[timestamp_range.py](../src/semantic_detector/bi_adapted/timestamp_range.py)
 - `calculate_unix_seconds_support`：4 字节 Unix 秒
@@ -203,9 +203,9 @@ BinaryInferno 源码采用 **GNU General Public License v3.0 (GPLv3)** 许可证
 - `decode_timestamp_bytes_be` / `decode_timestamp_bytes_le`：BE/LE 解码
 
 **修复内容**：
-- R271-R273：profile_builder.py 接入上述函数，计算 8 个 timestamp support 字段（4 种格式 × BE/LE）
-- R280：TimestampDetector.detect 重写，移除 bi_adapted.timestamp_range imports 和 `_calculate_*_support` 辅助方法，直接读取 profile 的 support 字段
-- R281-R282：增加无 capture_time 负例和 profile JSONL→infer 集成测试
+- ：profile_builder.py 接入上述函数，计算 8 个 timestamp support 字段（4 种格式 × BE/LE）
+- ：TimestampDetector.detect 重写，移除 bi_adapted.timestamp_range imports 和 `_calculate_*_support` 辅助方法，直接读取 profile 的 support 字段
+- ：增加无 capture_time 负例和 profile JSONL→infer 集成测试
 
 ---
 
@@ -217,7 +217,7 @@ BinaryInferno 源码采用 **GNU General Public License v3.0 (GPLv3)** 许可证
 # 熵计算（PayloadDetector）
 from semantic_detector.bi_adapted.entropy import H
 
-# 长度关系支持率（profile_builder.py，HIGH-7 修复）
+# 长度关系支持率（profile_builder.py， 修复）
 from semantic_detector.bi_adapted.length_relations import (
     calculate_message_length_support,
     calculate_remaining_bytes_support,
@@ -231,7 +231,7 @@ from semantic_detector.bi_adapted.sequence_heuristic import (
     calculate_nondecreasing_ratio,
 )
 
-# 时间戳支持率（profile_builder.py，HIGH-4 修复）
+# 时间戳支持率（profile_builder.py， 修复）
 from semantic_detector.bi_adapted.timestamp_range import (
     calculate_unix_seconds_support,
     calculate_unix_milliseconds_support,
@@ -242,7 +242,7 @@ from semantic_detector.bi_adapted.timestamp_range import (
 )
 ```
 
-**注意**：[timestamp.py](../src/semantic_detector/detectors/timestamp.py) `TimestampDetector` 在 R280 重写后**不再直接导入 bi_adapted.timestamp_range**，而是读取 profile_builder.py 预计算的 support 字段。bi_adapted.timestamp_range 的调用方只有 profile_builder.py。
+**注意**：[timestamp.py](../src/semantic_detector/detectors/timestamp.py) `TimestampDetector` 在  重写后**不再直接导入 bi_adapted.timestamp_range**，而是读取 profile_builder.py 预计算的 support 字段。bi_adapted.timestamp_range 的调用方只有 profile_builder.py。
 
 ---
 
@@ -250,7 +250,7 @@ from semantic_detector.bi_adapted.timestamp_range import (
 
 BinaryInferno 源码版本: 基于 binaryinferno-main 最新版本
 
-映射文档版本: 2.0.0（R314 更新，补充 HIGH-7 / HIGH-4 修复所用适配函数的来源与修改记录）
+映射文档版本: 2.0.0（ 更新，补充  /  修复所用适配函数的来源与修改记录）
 
 变更时需要：
 1. 更新本文档

@@ -1,6 +1,20 @@
-# 简易字段语义检测器
+# Semantic Detector
 
-一个基于规则的二进制协议字段语义检测器，用于自动识别消息字段的可能语义类型。
+**Binary Protocol Field Semantic Inference Toolkit / 二进制协议字段语义推断工具**
+
+Semantic Detector 是一个面向二进制协议逆向研究的规则型字段语义检测模块。它接收**已经给定字段边界**的消息样本，构建字段画像并推断长度、时间戳、序列/计数器、常量、类型/操作码、字符串、标识符、载荷等语义候选。
+
+> 当前版本聚焦“字段语义推断与证据输出”。它不会重新切分原始报文字段边界；如需边界校正，可将本项目的语义证据作为上游切分算法的反馈信号。
+
+## 特性
+
+- 严格 JSONL 输入契约与 fail-closed 校验
+- 字段统计画像、大小端数值分析与跨消息一致性特征
+- 多类语义检测器 + 冲突解析/拒识机制
+- `validate / profile / infer / run / evaluate` 完整 CLI
+- 可追踪 evidence、alternatives、manifest 与评估指标
+- 完整单元/集成测试，GitHub Actions 自动验证
+- 保留 BinaryInferno 衍生代码的 GPL-3.0 来源与许可证说明
 
 ---
 
@@ -73,7 +87,7 @@ PowerShell -ExecutionPolicy Bypass -File scripts/run_demo.ps1
 python -m semantic_detector.cli validate <input_file> [--output-dir <output_dir>]
 ```
 
-验证 JSONL 输入文件的格式、字段边界、字段数一致性（同 `(layout_id, direction)` 组内字段数不一致整组拒绝，HIGH-2）。
+验证 JSONL 输入文件的格式、字段边界、字段数一致性（同 `(layout_id, direction)` 组内字段数不一致整组拒绝，）。
 
 **输出产物**（位于 `--output-dir`）：
 
@@ -154,6 +168,26 @@ python -m semantic_detector.cli evaluate <predictions_file> <ground_truth_file> 
 | `confusion_matrix.csv` | 混淆矩阵（行为真值，列为预测） |
 | `errors.jsonl` | 错误记录（`wrong_label` / `abstained` / `missing_prediction` / `unexpected_prediction` 四类） |
 | `rejected_ground_truth.jsonl` | 因真值损坏被拒绝的记录（仅 `--allow-partial-ground-truth` 模式下有内容） |
+
+---
+
+## 开发与测试
+
+```bash
+pip install -e .
+pip install -r requirements.txt
+python -m pytest -q
+```
+
+贡献前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。安全问题与敏感样本处理说明见 [SECURITY.md](SECURITY.md)。
+
+## 开源许可与第三方代码
+
+本仓库采用 **GPL-3.0-or-later**。部分适配实现来源于 BinaryInferno，相关来源映射与许可证分别见：
+
+- [NOTICE.md](NOTICE.md)
+- [docs/BI_SOURCE_MAPPING.md](docs/BI_SOURCE_MAPPING.md)
+- [THIRD_PARTY_LICENSES/BinaryInferno-GPL-3.0.txt](THIRD_PARTY_LICENSES/BinaryInferno-GPL-3.0.txt)
 
 ---
 
@@ -335,7 +369,7 @@ semantic_detector/
 }
 ```
 
-### CLI --config 参数（R354）
+### CLI --config 参数
 
 `profile` / `infer` / `run` 子命令支持 `--config <config_file>` 参数：
 
@@ -349,7 +383,7 @@ python -m semantic_detector.cli run input.jsonl --output-dir out --config my_con
 
 `--config PATH` 通过 `load_config_with_override` 用用户值覆盖默认值（只覆盖用户提供的字段，其余保持默认）。
 
-### 配置端到端贯通（R354-R359）
+### 配置端到端贯通
 
 配置从 CLI → Pipeline → 检测器/Resolver → 上下文阈值 → Manifest 审计字段端到端贯通：
 - `manifest.json` 写入 `resolved_config`（Config.to_dict 完整快照）/ `config_source`（"default" 或用户路径）/ `config_sha256`（64 字符 hex 稳定哈希）
@@ -359,7 +393,7 @@ python -m semantic_detector.cli run input.jsonl --output-dir out --config my_con
 
 ---
 
-## CLI 退出语义（R361）
+## CLI 退出语义
 
 所有子命令默认 **fail closed**（任何拒绝 → exit 1），需显式参数才允许 partial 模式。
 
@@ -378,7 +412,7 @@ python -m semantic_detector.cli run input.jsonl --output-dir out --config my_con
 
 ---
 
-## Demo 指标局限声明（R361）
+## Demo 指标局限声明
 
 **Demo 指标不是实际协议性能**。本项目的 Demo 指标（`examples/output/evaluation/metrics.json`）仅基于 `examples/messages.jsonl`（21 条真值）的小样本评估，**不代表任意协议或真实流量上的检测准确率**。
 
@@ -395,7 +429,7 @@ Demo 中 4 个错误均为检测器的合理局限（1 个 `wrong_label` + 3 个
 
 ---
 
-## 严格错误行为（R408）
+## 严格错误行为
 
 本检测器对非法输入、重复标识、失败运行、产物覆盖和评价键冲突采用统一、严格、可审计的行为。以下 8 项行为是数据契约的强制规范，详见 [DATA_CONTRACT.md](docs/DATA_CONTRACT.md) 第十一节。
 
@@ -447,7 +481,7 @@ Demo 中 4 个错误均为检测器的合理局限（1 个 `wrong_label` + 3 个
 - **不得**保留上一次成功的 `predictions.jsonl` 或 `manifest.json`
 - **不得**没有 Manifest（失败也要有产物）
 
-#### Manifest 覆盖范围（R427 起）
+#### Manifest 覆盖范围（ 起）
 
 - 正常 Run：生成 `completed` Manifest
 - 进入 Run 后任意业务阶段失败：生成 `failed` Manifest（含 `failure_stage`/`error_type`/`partial_artifacts_present`）

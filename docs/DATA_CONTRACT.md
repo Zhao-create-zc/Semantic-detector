@@ -2,7 +2,7 @@
 
 本文档描述语义检测器中所有数据结构的契约定义，与 `src/semantic_detector/contracts.py`、`profile_builder.py`、`evaluation/ground_truth.py`、`evaluation/metrics.py` 中的实际实现保持一致。
 
-> R310 更新：组级字段数不一致整组拒绝行为、SemanticPrediction（含 prediction_status）、9 个标准粗粒度标签、predictions.jsonl 实际输出格式均与代码核对一致。
+>  更新：组级字段数不一致整组拒绝行为、SemanticPrediction（含 prediction_status）、9 个标准粗粒度标签、predictions.jsonl 实际输出格式均与代码核对一致。
 
 ---
 
@@ -37,7 +37,7 @@ class FieldSpan:
 - `start >= 0`，`end >= 0`
 - `start < end`（空字段非法）
 
-**R374 严格整数类型（HIGH-1 修复）**：
+** 严格整数类型（ 修复）**：
 - `field_index`、`start`、`end` 必须是严格整数：`type(value) is int`
 - **不接受** `bool`（因为 `True == 1`、`False == 0`，但 `isinstance(True, int)` 返回 `True`）
 - **不接受** `float`（如 `0.0`、`1.0`）
@@ -72,7 +72,7 @@ class MessageRecord:
 - `fields` 不得重叠（按 `start` 排序后相邻字段 `current.end <= next.start`）
 - `field_index` 必须从 0 开始连续递增（`sorted(indices) == list(range(len(indices)))`）
 
-**R376 严格类型（HIGH-1 修复）**：
+** 严格类型（ 修复）**：
 - `message_id`、`layout_id`：必须为非空字符串（strip 后非空）
 - `session_id`、`pair_id`：必须为字符串或 `None`
 - `input_order`：必须是严格整数 `type(value) is int`，**不接受** `bool` / `float` / `str`
@@ -97,7 +97,7 @@ class FieldKey:
 
 ### RejectionRecord
 
-来源：[contracts.py](src/semantic_detector/contracts.py)。R227 新增。
+来源：[contracts.py](src/semantic_detector/contracts.py)。 新增。
 
 ```python
 REJECTION_REASON_INCONSISTENT_FIELD_COUNT = "inconsistent_field_count"
@@ -137,7 +137,7 @@ class FieldSample:
 
 ### FieldProfile
 
-来源：[profile_builder.py](src/semantic_detector/profiling/profile_builder.py)。R264-R275 持续扩展。
+来源：[profile_builder.py](src/semantic_detector/profiling/profile_builder.py)。 持续扩展。
 
 字段分组（节选，完整列表见源文件）：
 
@@ -155,11 +155,11 @@ class FieldSample:
 | 元数据 | `insufficient_samples` / `numeric_be_distinct_value_count` / `numeric_le_distinct_value_count` |
 
 关键契约：
-- `dominant_value_hex` 在出现 tie（多个值同为最高频）时为 `None`，避免误导后续 type/opcode 后处理（R264/R283）。
+- `dominant_value_hex` 在出现 tie（多个值同为最高频）时为 `None`，避免误导后续 type/opcode 后处理。
 - `numeric_be_distinct_value_count >= 2` 是 LengthDetector 的前置条件（教程 8.4，防止常量字段被误判为长度）。
 - `capture_time_min/max` 仅在 `capture_time_count > 0` 时有值；TimestampDetector 不兜底系统时间（教程 9.4）。
-- `numeric_be_message_length_correlation` 仅作辅助描述，不作为判定证据（R268 注释，R276 HIGH-7 修复改用 `*_exact_support`）。
-- `to_dict()` 输出全部字段，`datetime` 转 ISO 字符串，`bytes` 转 hex，保证 JSON 可序列化（R274）。
+- `numeric_be_message_length_correlation` 仅作辅助描述，不作为判定证据（ 注释，  修复改用 `*_exact_support`）。
+- `to_dict()` 输出全部字段，`datetime` 转 ISO 字符串，`bytes` 转 hex，保证 JSON 可序列化。
 
 ### DetectorEvidence
 
@@ -184,7 +184,7 @@ class DetectorEvidence:
 
 ### SemanticPrediction
 
-来源：[contracts.py](src/semantic_detector/contracts.py)。R240-R248 修复 HIGH-3 后为流水线主输出。
+来源：[contracts.py](src/semantic_detector/contracts.py)。 修复  后为流水线主输出。
 
 ```python
 @dataclass(frozen=True)
@@ -213,11 +213,11 @@ class SemanticPrediction:
   - `candidate`：选中的主证据为 soft evidence
   - `abstained`：无候选，最终为 `unknown`
 - `evidence` 是元组（不可变），`evidence[0]` 为 primary，其余保留供审计
-- `alternatives` 是稳定排序的字典元组，primary 不混入 alternatives（R292）
+- `alternatives` 是稳定排序的字典元组，primary 不混入 alternatives
 
 ### GroundTruthRecord
 
-来源：[ground_truth.py](src/semantic_detector/evaluation/ground_truth.py)。R249 新增 `layout_id` / `direction`，`semantic_type` 改名为 `semantic_label`。
+来源：[ground_truth.py](src/semantic_detector/evaluation/ground_truth.py)。 新增 `layout_id` / `direction`，`semantic_type` 改名为 `semantic_label`。
 
 ```python
 @dataclass(frozen=True)
@@ -282,7 +282,7 @@ class EvaluationError:
 
 ## 二、组级字段数不一致整组拒绝
 
-来源：[collector.py](src/semantic_detector/profiling/collector.py) `validate_group_field_count`。R226-R232 修复 HIGH-2。
+来源：[collector.py](src/semantic_detector/profiling/collector.py) `validate_group_field_count`。 修复 。
 
 ### 行为定义
 
@@ -297,7 +297,7 @@ class EvaluationError:
 
 ### CLI 接入
 
-`prepare_records_for_profiling` 是 `cmd_validate` / `cmd_profile` / `cmd_run` 共享的单一入口，确保每个 CLI 命令都执行字段数校验，避免漏掉（修复 HIGH-2 的核心）。
+`prepare_records_for_profiling` 是 `cmd_validate` / `cmd_profile` / `cmd_run` 共享的单一入口，确保每个 CLI 命令都执行字段数校验，避免漏掉（修复  的核心）。
 
 ### 与测试核对
 
@@ -312,7 +312,7 @@ class EvaluationError:
 
 ## 三、9 个标准粗粒度标签
 
-来源：[taxonomy.py](src/semantic_detector/taxonomy.py)。R235 集中管理。
+来源：[taxonomy.py](src/semantic_detector/taxonomy.py)。 集中管理。
 
 ```python
 CANONICAL_COARSE_LABELS = (
@@ -403,7 +403,7 @@ JSONL 格式，每行一个 JSON 对象：
 
 ### 输出文件 predictions.jsonl
 
-R240-R248 后，每行是一个 `SemanticPrediction` 序列化结果（不再是 `DetectorEvidence`）：
+ 后，每行是一个 `SemanticPrediction` 序列化结果（不再是 `DetectorEvidence`）：
 
 ```json
 {
@@ -438,7 +438,7 @@ R240-R248 后，每行是一个 `SemanticPrediction` 序列化结果（不再是
 
 字段说明：
 - `evidence` 是数组，`evidence[0]` 为 primary，其余为保留的候选证据
-- `alternatives` 是数组，每个元素是除 primary 外的候选证据字典（R292 稳定排序）
+- `alternatives` 是数组，每个元素是除 primary 外的候选证据字典（ 稳定排序）
 - `confidence` 等于 `evidence[0].score`
 - `prediction_status` 与 `evidence[0].is_hard_evidence` 一致
 
@@ -501,7 +501,7 @@ length,0,4,0,0,0,0,0,0
 1. **字段越界校验**：`FieldSpan.end <= len(payload)`
 2. **字段重叠校验**：按 `start` 排序后相邻字段不重叠
 3. **field_index 连续性校验**：从 0 开始连续
-4. **组级字段数一致性校验**：同 `(layout_id, direction)` 组内 `len(fields)` 必须一致，否则**整组拒绝**（HIGH-2）
+4. **组级字段数一致性校验**：同 `(layout_id, direction)` 组内 `len(fields)` 必须一致，否则**整组拒绝**
 5. **方向合法性校验**：`direction` 必须是 `request` 或 `response`
 
 ### 画像校验（build_field_profile）
@@ -523,7 +523,7 @@ length,0,4,0,0,0,0,0,0
 
 ---
 
-## 七、CLI 退出语义（R361）
+## 七、CLI 退出语义
 
 来源：[cli.py](src/semantic_detector/cli.py) `cmd_validate` / `cmd_profile` / `cmd_run` / `cmd_evaluate`。
 
@@ -571,7 +571,7 @@ length,0,4,0,0,0,0,0,0
 
 ---
 
-## 八、partial-input 和 partial-ground-truth 模式（R361）
+## 八、partial-input 和 partial-ground-truth 模式
 
 来源：[cli.py](src/semantic_detector/cli.py) `--allow-partial-input` / `--allow-partial-ground-truth`。
 
@@ -605,7 +605,7 @@ python -m semantic_detector.cli evaluate predictions.jsonl ground_truth.jsonl --
 
 ---
 
-## 九、配置使用方式（R361）
+## 九、配置使用方式
 
 来源：[config.py](src/semantic_detector/config.py) + [cli.py](src/semantic_detector/cli.py) `--config` 参数。
 
@@ -642,18 +642,18 @@ python -m semantic_detector.cli run input.jsonl --output-dir out --config my_con
 
 `--config PATH` 加载用户配置文件，通过 `load_config_with_override` 用用户值覆盖默认值（只覆盖用户提供的字段，其余保持默认）。
 
-### 配置端到端贯通（R354-R359 MEDIUM-3 修复链）
+### 配置端到端贯通（  实现链路）
 
 配置从 CLI → Pipeline → 检测器/Resolver → 上下文阈值 → Manifest 审计字段端到端贯通：
 
-1. **CLI --config**（R354）：加载用户配置或默认配置
-2. **Pipeline 接收 config**（R355）：`DetectionPipeline(config=config)` → 所有检测器和 Resolver 共享同一 Config 实例
-3. **检测器使用 config**（R356）：11 个阈值真实影响检测器行为
-4. **Resolver 使用 config**（R357）：`ambiguity_margin` 真实影响 Resolver 模糊检查
-5. **上下文阈值统一**（R358）：5 个上下文阈值全部由 Config 驱动（timestamp_slop_seconds / timestamp_support / min_samples / type_opcode_min_dominant_ratio / identifier_score_cap）
-6. **Manifest 配置审计**（R359）：manifest 写入 `resolved_config` / `config_source` / `config_sha256`
+1. **CLI --config**：加载用户配置或默认配置
+2. **Pipeline 接收 config**：`DetectionPipeline(config=config)` → 所有检测器和 Resolver 共享同一 Config 实例
+3. **检测器使用 config**：11 个阈值真实影响检测器行为
+4. **Resolver 使用 config**：`ambiguity_margin` 真实影响 Resolver 模糊检查
+5. **上下文阈值统一**：5 个上下文阈值全部由 Config 驱动（timestamp_slop_seconds / timestamp_support / min_samples / type_opcode_min_dominant_ratio / identifier_score_cap）
+6. **Manifest 配置审计**：manifest 写入 `resolved_config` / `config_source` / `config_sha256`
 
-### Manifest 配置审计字段（R359）
+### Manifest 配置审计字段
 
 `manifest.json` 的 `config` 段包含 5 个字段：
 
@@ -675,7 +675,7 @@ python -m semantic_detector.cli run input.jsonl --output-dir out --config my_con
 
 ---
 
-## 十、Demo 指标局限声明（R361）
+## 十、Demo 指标局限声明
 
 ### Demo 指标不是实际协议性能
 
@@ -707,13 +707,13 @@ Demo 中 4 个错误均为检测器的合理局限：
 
 ---
 
-## 十一、严格错误行为（R408）
+## 十一、严格错误行为
 
-本节汇总 R372-R406 修复链确立的 8 项严格错误行为，作为数据契约的强制规范。任何违反这些行为的输入或状态都必须被拒绝、标记或失败，不得静默降级。
+本节汇总  实现链路确立的 8 项严格错误行为，作为数据契约的强制规范。任何违反这些行为的输入或状态都必须被拒绝、标记或失败，不得静默降级。
 
 ### 1. 所有字段的严格 JSON 类型
 
-**来源**：R374/R376/R377/R378（HIGH-1 修复，阶段 A）
+**来源**：（ 修复，阶段 A）
 
 - `field_index`、`start`、`end`：必须是严格整数 `type(value) is int`
 - `message_id`、`layout_id`：必须为非空字符串（strip 后非空）
@@ -726,7 +726,7 @@ Demo 中 4 个错误均为检测器的合理局限：
 
 ### 2. bool 不接受为 int
 
-**来源**：R374（HIGH-1 修复，阶段 A）
+**来源**：（ 修复，阶段 A）
 
 - Python 中 `True == 1`、`False == 0`，但 `isinstance(True, int)` 返回 `True`
 - 所有整数字段必须用 `type(value) is int` 检查，**不接受** `isinstance(value, int)` 直接接受 bool
@@ -734,7 +734,7 @@ Demo 中 4 个错误均为检测器的合理局限：
 
 ### 3. 非法 direction 不转 unknown
 
-**来源**：R397（HIGH-5 修复，阶段 D）
+**来源**：（ 修复，阶段 D）
 
 - `direction` 只接受 `request` 或 `response`（`ALLOWED_DIRECTIONS`）
 - 非法值（如 `foo`、`bar`、`""`、`None`、`unknown`）在 `get_direction_or_raise` 中抛出 `ValueError`
@@ -745,7 +745,7 @@ Demo 中 4 个错误均为检测器的合理局限：
 
 ### 4. duplicate FieldKey 评价失败
 
-**来源**：R399（HIGH-5 修复，阶段 D）
+**来源**：（ 修复，阶段 D）
 
 - `FieldKey = (layout_id, direction, field_index)` 三元组唯一标识一个待检测字段组
 - `align_predictions_with_truth` 先规范化（严格 direction 解析），再检查重复
@@ -755,7 +755,7 @@ Demo 中 4 个错误均为检测器的合理局限：
 
 ### 5. 评价数量守恒
 
-**来源**：R400（HIGH-5 修复，阶段 D）
+**来源**：（ 修复，阶段 D）
 
 - 正式评价必须满足：
   - `matched_predictions + unmatched_predictions = total_predictions`
@@ -766,7 +766,7 @@ Demo 中 4 个错误均为检测器的合理局限：
 
 ### 6. Profile 默认不允许部分输入
 
-**来源**：R385（HIGH-3 修复，阶段 B）
+**来源**：（ 修复，阶段 B）
 
 - `profile` 命令默认对任何 rejection 都失败：`exit 1`，`status=invalid_input`
 - **不得**静默丢弃 `_rejected_records`，**不得**返回 `exit 0` 冒充完整成功
@@ -779,7 +779,7 @@ Demo 中 4 个错误均为检测器的合理局限：
 
 ### 7. 失败 run 不保留旧结果
 
-**来源**：R387-R390（HIGH-4 修复，阶段 C）
+**来源**：（ 修复，阶段 C）
 
 - `run` 命令开始时清理自身拥有的旧产物（`clean_command_artifacts`）
 - 失败运行写入失败 Manifest（`build_failed_run_manifest`，14 字段）
@@ -789,7 +789,7 @@ Demo 中 4 个错误均为检测器的合理局限：
 
 ### 8. 每个命令的产物所有权
 
-**来源**：R388（HIGH-4 修复，阶段 C）
+**来源**：（ 修复，阶段 C）
 
 每个命令只负责清理和写入自己拥有的产物文件：
 
@@ -807,7 +807,7 @@ Demo 中 4 个错误均为检测器的合理局限：
 
 ## 十二、版本控制
 
-数据契约版本: 3.0.0（R310 初版，R361 新增第七至第十节，R408 新增第十一节"严格错误行为" + FieldSpan/MessageRecord 严格类型说明）
+数据契约版本: 3.0.0（ 初版， 新增第七至第十节， 新增第十一节"严格错误行为" + FieldSpan/MessageRecord 严格类型说明）
 
 变更时需要：
 1. 更新版本号
