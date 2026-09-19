@@ -400,7 +400,10 @@ class TestReleaseZipInstallable:
         with zipfile.ZipFile(release_zip, "r") as zf:
             zf.extract("pyproject.toml", tmp_path)
 
-        import tomllib
+        try:
+            import tomllib
+        except ModuleNotFoundError:  # Python 3.10
+            import tomli as tomllib
 
         with open(tmp_path / "pyproject.toml", "rb") as f:
             data = tomllib.load(f)
