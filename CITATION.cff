@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use Semantic Detector in research, please cite the software and the exact release or commit used."
+title: "Semantic Detector"
+type: software
+authors:
+  - name: "Semantic Detector contributors"
+repository-code: "https://github.com/Zhao-create-zc/Semantic-detector"
+url: "https://github.com/Zhao-create-zc/Semantic-detector"
+license: "GPL-3.0-or-later"
+version: "0.1.0"
+keywords:
+  - binary protocol
+  - protocol reverse engineering
+  - semantic inference
+  - network protocol analysis

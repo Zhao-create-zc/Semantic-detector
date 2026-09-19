@@ -5,7 +5,8 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "semantic_detector"
 version = "0.1.0"
-description = "简易字段语义检测器 - Simple Field Semantic Detector"
+description = "Rule-based semantic inference toolkit for binary protocol fields"
+keywords = ["binary protocol", "protocol reverse engineering", "semantic inference", "network protocol analysis"]
 readme = "README.md"
 license = {text = "GPL-3.0-or-later"}
 requires-python = ">=3.10"
@@ -15,6 +16,8 @@ authors = [
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
     "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
@@ -24,6 +27,14 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    'tomli>=2.0.1; python_version < "3.11"',
+    "build>=1.2.0",
+    "twine>=5.0.0",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -38,3 +49,5 @@ addopts = "-v --tb=short"
 Homepage = "https://github.com/Zhao-create-zc/Semantic-detector"
 Repository = "https://github.com/Zhao-create-zc/Semantic-detector"
 Issues = "https://github.com/Zhao-create-zc/Semantic-detector/issues"
+Documentation = "https://github.com/Zhao-create-zc/Semantic-detector/tree/main/docs"
+Changelog = "https://github.com/Zhao-create-zc/Semantic-detector/blob/main/CHANGELOG.md"

@@ -8,8 +8,7 @@
 python -m venv .venv
 # Windows: .venv\Scripts\activate
 # Linux/macOS: source .venv/bin/activate
-pip install -e .
-pip install -r requirements.txt
+pip install -e ".[dev]"
 python -m pytest -q
 ```
 
@@ -23,3 +22,11 @@ python -m pytest -q
 ## Pull Request
 
 PR 描述应说明：问题、修改方法、验证方式，以及是否影响数据契约或语义标签体系。
+
+## 提交信息
+
+建议使用清晰的提交前缀，例如 `feat:`、`fix:`、`docs:`、`test:`、`refactor:`、`chore:`。一个提交尽量只表达一个逻辑变更。
+
+## 研究结果与 Benchmark
+
+若 PR 包含准确率、F1 或协议 benchmark，请同时说明数据来源、样本数、预处理方式、配置和可复现实验命令。不要把 synthetic demo 指标描述成真实协议通用性能。

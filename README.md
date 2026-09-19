@@ -1,5 +1,8 @@
 # Semantic Detector
 
+[![tests](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/tests.yml/badge.svg)](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/tests.yml)
+[![package](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/package.yml/badge.svg)](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/package.yml)
+
 **Binary Protocol Field Semantic Inference Toolkit / 二进制协议字段语义推断工具**
 
 Semantic Detector 是一个面向二进制协议逆向研究的规则型字段语义检测模块。它接收**已经给定字段边界**的消息样本，构建字段画像并推断长度、时间戳、序列/计数器、常量、类型/操作码、字符串、标识符、载荷等语义候选。
@@ -87,7 +90,7 @@ PowerShell -ExecutionPolicy Bypass -File scripts/run_demo.ps1
 python -m semantic_detector.cli validate <input_file> [--output-dir <output_dir>]
 ```
 
-验证 JSONL 输入文件的格式、字段边界、字段数一致性（同 `(layout_id, direction)` 组内字段数不一致整组拒绝，）。
+验证 JSONL 输入文件的格式、字段边界、字段数一致性（同 `(layout_id, direction)` 组内字段数不一致时整组拒绝。
 
 **输出产物**（位于 `--output-dir`）：
 
@@ -180,6 +183,17 @@ python -m pytest -q
 ```
 
 贡献前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。安全问题与敏感样本处理说明见 [SECURITY.md](SECURITY.md)。
+
+## 项目维护与研究复现
+
+- 架构说明：[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- 可复现性指南：[docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md)
+- Roadmap：[ROADMAP.md](ROADMAP.md)
+- Changelog：[CHANGELOG.md](CHANGELOG.md)
+- 发布流程：[docs/RELEASING.md](docs/RELEASING.md)
+- 学术/科研引用：[CITATION.cff](CITATION.cff)
+- 支持与提问：[SUPPORT.md](SUPPORT.md)
+- 行为准则：[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 ## 开源许可与第三方代码
 
@@ -481,7 +495,7 @@ Demo 中 4 个错误均为检测器的合理局限（1 个 `wrong_label` + 3 个
 - **不得**保留上一次成功的 `predictions.jsonl` 或 `manifest.json`
 - **不得**没有 Manifest（失败也要有产物）
 
-#### Manifest 覆盖范围（ 起）
+#### Manifest 覆盖范围
 
 - 正常 Run：生成 `completed` Manifest
 - 进入 Run 后任意业务阶段失败：生成 `failed` Manifest（含 `failure_stage`/`error_type`/`partial_artifacts_present`）
@@ -524,7 +538,7 @@ python -m pytest tests/integration/ -v
 python -m pytest -q
 ```
 
-当前全量测试：1676 passed，0 failed。
+当前全量测试：1970 passed，0 failed。
 
 ---
 

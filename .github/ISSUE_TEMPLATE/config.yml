@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security reports
+    url: https://github.com/Zhao-create-zc/Semantic-detector/blob/main/SECURITY.md
+    about: Please review the security-reporting guidance before publishing sensitive details.
+  - name: Usage and support
+    url: https://github.com/Zhao-create-zc/Semantic-detector/blob/main/SUPPORT.md
+    about: Check support guidance and the information to include in a report.
