@@ -11,6 +11,7 @@ All notable user-visible changes to Semantic Detector are documented here. The p
 - `scripts/dev_check.py` for a single local verification entry point.
 - Maintainer/CODEOWNERS and compatibility policy files.
 - Standalone JSONL schema validation utility.
+- CodeQL and pull-request dependency review workflows plus a documented security model.
 
 ### Added
 

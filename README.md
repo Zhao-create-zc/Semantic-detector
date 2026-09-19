@@ -3,6 +3,7 @@
 [![coverage gate](https://img.shields.io/badge/coverage%20gate-95%25-brightgreen)](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/coverage.yml)
 [![tests](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/tests.yml/badge.svg)](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/tests.yml)
 [![package](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/package.yml/badge.svg)](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/package.yml)
+[![CodeQL](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/codeql.yml/badge.svg)](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/codeql.yml)
 
 **Binary Protocol Field Semantic Inference Toolkit / 二进制协议字段语义推断工具**
 
@@ -223,6 +224,10 @@ python -m pytest -q
 - 学术/科研引用：[CITATION.cff](CITATION.cff)
 - 支持与提问：[SUPPORT.md](SUPPORT.md)
 - 行为准则：[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+
+## 安全与依赖检查
+
+仓库启用 CodeQL Python 静态分析、Dependabot、PR dependency review、跨平台测试、95% 覆盖率门槛和 package 构建校验。安全模型见 [docs/SECURITY_MODEL.md](docs/SECURITY_MODEL.md)，漏洞报告方式见 [SECURITY.md](SECURITY.md)。
 
 ## 开源许可与第三方代码
 
