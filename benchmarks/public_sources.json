@@ -1,0 +1,30 @@
+{
+  "iti-modbus-smoke-v1": {
+    "protocol": "modbus",
+    "dataset_name": "ITI ICS-Security-Tools Modbus test data part 1",
+    "source_repo": "ITI/ICS-Security-Tools",
+    "source_commit": "9b826091e7ba3fbdd5997d31e116f29e09cbbb48",
+    "source_path": "pcaps/ModbusTCP/modbus_test_data_part1.pcap",
+    "download_url": "https://raw.githubusercontent.com/ITI/ICS-Security-Tools/9b826091e7ba3fbdd5997d31e116f29e09cbbb48/pcaps/ModbusTCP/modbus_test_data_part1.pcap",
+    "git_blob_sha1": "ea9238c031e54af97bb45865bb7162d35fa66643",
+    "license_or_terms": "CC BY 4.0 (repository-level LICENSE.md)",
+    "attribution": "ITI / ICS-Security-Tools",
+    "upstream_home": "https://github.com/ITI/ICS-Security-Tools",
+    "redistribute_raw_capture": false,
+    "notes": "Raw capture is downloaded from the pinned upstream commit at benchmark time and is not vendored into this repository."
+  },
+  "iti-dnp3-smoke-v1": {
+    "protocol": "dnp3",
+    "dataset_name": "ITI ICS-Security-Tools DNP3 sample capture",
+    "source_repo": "ITI/ICS-Security-Tools",
+    "source_commit": "9b826091e7ba3fbdd5997d31e116f29e09cbbb48",
+    "source_path": "pcaps/bro/dnp3/dnp3.pcap",
+    "download_url": "https://raw.githubusercontent.com/ITI/ICS-Security-Tools/9b826091e7ba3fbdd5997d31e116f29e09cbbb48/pcaps/bro/dnp3/dnp3.pcap",
+    "git_blob_sha1": "8ee8d3ec6129aa7730a0e967d955d347f0722c10",
+    "license_or_terms": "CC BY 4.0 (repository-level LICENSE.md)",
+    "attribution": "ITI / ICS-Security-Tools",
+    "upstream_home": "https://github.com/ITI/ICS-Security-Tools",
+    "redistribute_raw_capture": false,
+    "notes": "Raw capture is downloaded from the pinned upstream commit at benchmark time and is not vendored into this repository."
+  }
+}

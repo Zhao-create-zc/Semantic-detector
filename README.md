@@ -4,6 +4,7 @@
 [![tests](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/tests.yml/badge.svg)](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/tests.yml)
 [![package](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/package.yml/badge.svg)](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/package.yml)
 [![CodeQL](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/codeql.yml/badge.svg)](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/codeql.yml)
+[![public benchmark smoke](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/public-benchmark-smoke.yml/badge.svg)](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/public-benchmark-smoke.yml)
 
 **Binary Protocol Field Semantic Inference Toolkit / 二进制协议字段语义推断工具**
 
@@ -203,6 +204,19 @@ python scripts/validate_jsonl_schema.py schemas/message.schema.json examples/mes
 - [benchmarks/](benchmarks/README.md)
 
 开发者可运行 `python scripts/dev_check.py --coverage` 一次完成 JSON/语法检查、1975 项测试与 95% 覆盖率门槛验证。
+
+## Public protocol smoke benchmarks
+
+仓库包含不重分发第三方 PCAP 的公开协议 smoke benchmark。当前固定来源包括 Modbus/TCP 与 DNP3；工作流在运行时从上游固定 commit 下载原始 PCAP，转换为统一 JSONL，再执行完整推断与评价。
+
+```bash
+python -m scripts.benchmarks.run_public_benchmark iti-modbus-smoke-v1 --work-dir benchmark-output/modbus
+python -m scripts.benchmarks.run_public_benchmark iti-dnp3-smoke-v1 --work-dir benchmark-output/dnp3
+```
+
+来源与限制见 [benchmarks/public/README.md](benchmarks/public/README.md) 和 [docs/PUBLIC_BENCHMARKS.md](docs/PUBLIC_BENCHMARKS.md)。这些自动结果属于 **Level A smoke**，用于验证端到端可复现链路，不代表通用协议性能。
+
+---
 
 ## 开发与测试
 

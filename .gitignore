@@ -97,3 +97,7 @@ dmypy.json
 
 # pytype
 .pytype/
+
+# Public benchmark generated data
+benchmark-output/
+benchmarks/_work/

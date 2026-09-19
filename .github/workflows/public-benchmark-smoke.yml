@@ -1,0 +1,71 @@
+name: public-benchmark-smoke
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * 0"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/benchmarks/**"
+      - "benchmarks/public_sources.json"
+      - "benchmarks/public/**"
+      - "src/semantic_detector/**"
+      - "config/defaults.json"
+      - ".github/workflows/public-benchmark-smoke.yml"
+  pull_request:
+    paths:
+      - "scripts/benchmarks/**"
+      - "benchmarks/public_sources.json"
+      - "benchmarks/public/**"
+      - "src/semantic_detector/**"
+      - "config/defaults.json"
+      - ".github/workflows/public-benchmark-smoke.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        source:
+          - iti-modbus-smoke-v1
+          - iti-dnp3-smoke-v1
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+          pip install -r requirements.txt
+      - name: Run public benchmark
+        run: |
+          python -m scripts.benchmarks.run_public_benchmark \
+            "${{ matrix.source }}" \
+            --work-dir "benchmark-output/${{ matrix.source }}"
+      - name: Validate benchmark manifest schema
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from jsonschema import Draft202012Validator, FormatChecker
+
+          source = "${{ matrix.source }}"
+          schema = json.loads(Path("schemas/benchmark_manifest.schema.json").read_text(encoding="utf-8"))
+          instance = json.loads(Path(f"benchmark-output/{source}/benchmark_manifest.json").read_text(encoding="utf-8"))
+          Draft202012Validator(schema, format_checker=FormatChecker()).validate(instance)
+          print("benchmark manifest schema: OK")
+          PY
+      - name: Upload smoke artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: public-benchmark-${{ matrix.source }}
+          path: benchmark-output/${{ matrix.source }}/
+          if-no-files-found: error
+          retention-days: 14
