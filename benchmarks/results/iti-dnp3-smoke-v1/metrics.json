@@ -1,0 +1,21 @@
+{
+  "overall_accuracy": 0.35714285714285715,
+  "coverage": 0.7857142857142857,
+  "unknown_rate": 0.21428571428571427,
+  "covered_accuracy": 0.45454545454545453,
+  "fine_top1_accuracy": 0.0,
+  "macro_f1": 0.3611111111111111,
+  "macro_precision": 0.3888888888888889,
+  "macro_recall": 0.4166666666666667,
+  "counts": {
+    "total_predictions": 14,
+    "total_truths": 14,
+    "matched_count": 14,
+    "unmatched_truths_count": 0,
+    "unmatched_predictions_count": 0,
+    "error_count": 9,
+    "rejected_ground_truth_count": 0
+  },
+  "status": "ok",
+  "valid_for_reporting": true
+}

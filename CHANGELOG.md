@@ -13,6 +13,7 @@ All notable user-visible changes to Semantic Detector are documented here. The p
 - Standalone JSONL schema validation utility.
 - CodeQL and pull-request dependency review workflows plus a documented security model.
 - Public Modbus/TCP and DNP3 Level-A smoke benchmark pipeline with pinned upstream PCAP sources, provenance manifests, automatic conversion, evaluation, and artifact reports.
+- Committed lightweight Modbus/TCP and DNP3 real-trace smoke baseline snapshots with metrics, error cases, and failure-mode analysis.
 - Cross-platform test and package validation workflows, Dependabot, release automation, citation, roadmap, and contributor documentation.
 
 ### Fixed

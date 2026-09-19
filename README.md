@@ -216,6 +216,8 @@ python -m scripts.benchmarks.run_public_benchmark iti-dnp3-smoke-v1 --work-dir b
 
 来源与限制见 [benchmarks/public/README.md](benchmarks/public/README.md) 和 [docs/PUBLIC_BENCHMARKS.md](docs/PUBLIC_BENCHMARKS.md)。这些自动结果属于 **Level A smoke**，用于验证端到端可复现链路，不代表通用协议性能。
 
+首个真实 trace 基线已固化在 [benchmarks/results/](benchmarks/results/)；结果与失败模式分析见 [docs/REAL_PROTOCOL_BASELINE.md](docs/REAL_PROTOCOL_BASELINE.md)。
+
 ---
 
 ## 开发与测试

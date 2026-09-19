@@ -1,0 +1,21 @@
+{
+  "overall_accuracy": 0.25,
+  "coverage": 0.75,
+  "unknown_rate": 0.25,
+  "covered_accuracy": 0.3333333333333333,
+  "fine_top1_accuracy": 0.0,
+  "macro_f1": 0.24761904761904763,
+  "macro_precision": 0.27999999999999997,
+  "macro_recall": 0.3,
+  "counts": {
+    "total_predictions": 12,
+    "total_truths": 12,
+    "matched_count": 12,
+    "unmatched_truths_count": 0,
+    "unmatched_predictions_count": 0,
+    "error_count": 9,
+    "rejected_ground_truth_count": 0
+  },
+  "status": "ok",
+  "valid_for_reporting": true
+}

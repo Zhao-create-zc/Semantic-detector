@@ -1,0 +1,8 @@
+,constant,identifier,length,payload,string,type_control,unknown
+constant,2,2,0,0,0,2,0
+identifier,0,0,0,0,0,0,0
+length,0,0,1,0,0,0,0
+payload,0,0,0,2,0,0,0
+string,0,2,0,0,0,0,0
+type_control,0,0,0,0,0,0,0
+unknown,0,0,1,0,0,0,2
