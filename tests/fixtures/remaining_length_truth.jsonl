@@ -1,0 +1,2 @@
+{"truth_id": 1, "field_index": 0, "semantic_type": "remaining_length", "confidence": 1.0, "is_hard_evidence": true, "details": {"encoding": "mqtt_variable_length"}}
+{"truth_id": 2, "field_index": 1, "semantic_type": "payload", "confidence": 1.0, "is_hard_evidence": true, "details": {"variable_length": true}}

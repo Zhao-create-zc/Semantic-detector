@@ -1,0 +1,18 @@
+{
+  "_description": "R303: 文档化阈值，与 config/defaults.json 一致，不以降低科学标准换结果",
+  "min_samples": 8,
+  "constant_support": 0.98,
+  "length_support": 0.90,
+  "timestamp_support": 0.90,
+  "timestamp_slop_seconds": 86400,
+  "sequence_unique_ratio": 0.70,
+  "sequence_increasing_ratio": 0.80,
+  "string_printable_ratio": 0.85,
+  "string_nonempty_ratio": 0.80,
+  "identifier_unique_ratio": 0.80,
+  "identifier_score_cap": 0.70,
+  "payload_entropy_threshold": 0.70,
+  "ambiguity_margin": 0.08,
+  "type_opcode_min_dominant_ratio": 0.50,
+  "resolver_min_score": 0.5
+}

@@ -1,0 +1,6 @@
+# Production dependencies
+# No third-party dependencies required for production
+
+# Development dependencies
+pytest>=7.0.0
+pytest-cov>=4.0.0

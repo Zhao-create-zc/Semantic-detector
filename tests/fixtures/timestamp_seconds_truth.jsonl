@@ -1,0 +1,2 @@
+{"truth_id": 1, "field_index": 0, "semantic_type": "timestamp", "confidence": 1.0, "is_hard_evidence": true, "details": {"unit": "seconds", "epoch": "unix", "byte_order": "big", "width": 4}}
+{"truth_id": 2, "field_index": 1, "semantic_type": "payload", "confidence": 1.0, "is_hard_evidence": true, "details": {"variable_length": true}}

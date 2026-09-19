@@ -1,0 +1,2 @@
+{"truth_id": 1, "field_index": 0, "semantic_type": "unknown", "confidence": 0.0, "is_hard_evidence": false, "details": {"reason": "insufficient_samples", "sample_count": 2}}
+{"truth_id": 2, "field_index": 1, "semantic_type": "payload", "confidence": 1.0, "is_hard_evidence": true, "details": {"variable_length": true}}

@@ -1,0 +1,3 @@
+{"message_id": "msg_0001", "layout_id": "layout_A", "direction": "request", "payload_hex": "0001", "fields": [{"field_index": 0, "start": 0, "end": 2}]}
+{"message_id": "msg_0002", "layout_id": "layout_A", "direction": "request", "payload_hex": "0203", "fields": [{"field_index": 0, "start": 0, "end": 2}]}
+{"message_id": "msg_0003", "layout_id": "layout_A", "direction": "request", "payload_hex": "0405", "fields": [{"field_index": 0, "start": 0, "end": 2}]}

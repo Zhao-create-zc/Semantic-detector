@@ -1,0 +1,2 @@
+{"truth_id": 1, "field_index": 0, "semantic_type": "constant", "confidence": 1.0, "is_hard_evidence": true, "details": {"value": "0x00000001"}}
+{"truth_id": 2, "field_index": 1, "semantic_type": "constant", "confidence": 1.0, "is_hard_evidence": true, "details": {"value": "0x00000002"}}

@@ -1,0 +1,99 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+.cleanroom_venv/
+venv_cleanroom/
+.venv_release_check/
+.venv_v3_final_check/
+env.bak/
+venv.bak/
+
+# Temporary audit, clean-room, and old run directories
+temp_audit/
+temp_cleanroom/
+artifacts/runs/
+# Temporary audit outputs
+temp_*/
+
+# Testing
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+htmlcov/
+cover/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Project specific
+artifacts/rounds/
+*.log
+log.txt
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# PyInstaller
+*.manifest
+*.spec
+
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# mypy
+.mypy_cache/
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype
+.pytype/
