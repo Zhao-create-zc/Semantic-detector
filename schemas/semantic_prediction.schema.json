@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Zhao-create-zc/Semantic-detector/raw/main/schemas/semantic_prediction.schema.json",
+  "title": "Semantic Detector prediction record",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "run_id",
+    "layout_id",
+    "direction",
+    "field_index",
+    "coarse_label",
+    "fine_label",
+    "confidence",
+    "abstained",
+    "prediction_status",
+    "evidence",
+    "alternatives"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "layout_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "request",
+        "response",
+        "unknown"
+      ]
+    },
+    "field_index": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "coarse_label": {
+      "type": "string",
+      "enum": [
+        "constant",
+        "length",
+        "timestamp",
+        "sequence_or_counter",
+        "string",
+        "identifier",
+        "type_control",
+        "payload",
+        "unknown"
+      ]
+    },
+    "fine_label": {
+      "type": "string",
+      "minLength": 1
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "abstained": {
+      "type": "boolean"
+    },
+    "prediction_status": {
+      "type": "string",
+      "enum": [
+        "confirmed",
+        "candidate",
+        "abstained"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "detector",
+          "coarse_label",
+          "fine_label",
+          "is_hard_evidence",
+          "score",
+          "reason_code"
+        ],
+        "properties": {
+          "detector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "coarse_label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fine_label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "is_hard_evidence": {
+            "type": "boolean"
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "reason_code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "details": {
+            "type": [
+              "object",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "alternatives": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "config_summary": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  }
+}

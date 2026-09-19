@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Zhao-create-zc/Semantic-detector/raw/main/schemas/ground_truth.schema.json",
+  "title": "Semantic Detector ground truth record",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "truth_id",
+    "field_index",
+    "confidence",
+    "is_hard_evidence"
+  ],
+  "anyOf": [
+    {
+      "required": [
+        "semantic_label"
+      ]
+    },
+    {
+      "required": [
+        "semantic_type"
+      ]
+    }
+  ],
+  "properties": {
+    "truth_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "layout_id": {
+      "type": "string",
+      "minLength": 1,
+      "default": "default"
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "request",
+        "response",
+        "unknown"
+      ],
+      "default": "unknown"
+    },
+    "field_index": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "semantic_label": {
+      "type": "string",
+      "enum": [
+        "constant",
+        "length",
+        "timestamp",
+        "sequence_or_counter",
+        "string",
+        "identifier",
+        "type_control",
+        "payload",
+        "unknown"
+      ]
+    },
+    "semantic_type": {
+      "type": "string"
+    },
+    "fine_label": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "is_hard_evidence": {
+      "type": "boolean"
+    },
+    "details": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  }
+}

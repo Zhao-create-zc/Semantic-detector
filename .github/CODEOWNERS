@@ -1,0 +1,10 @@
+# Primary project ownership
+* @Zhao-create-zc
+
+# Public contracts and release-critical files
+/schemas/ @Zhao-create-zc
+/docs/DATA_CONTRACT.md @Zhao-create-zc
+/src/semantic_detector/taxonomy.py @Zhao-create-zc
+/pyproject.toml @Zhao-create-zc
+/LICENSE @Zhao-create-zc
+/NOTICE.md @Zhao-create-zc

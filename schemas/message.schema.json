@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Zhao-create-zc/Semantic-detector/raw/main/schemas/message.schema.json",
+  "title": "Semantic Detector input message",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "message_id",
+    "layout_id",
+    "direction",
+    "payload_hex",
+    "fields"
+  ],
+  "properties": {
+    "message_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "layout_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "request",
+        "response",
+        "unknown"
+      ]
+    },
+    "payload_hex": {
+      "type": "string",
+      "minLength": 2,
+      "pattern": "^(?:[0-9A-Fa-f]{2})+$"
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "field_index",
+          "start",
+          "end"
+        ],
+        "properties": {
+          "field_index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "start": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "end": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "capture_time": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "session_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "pair_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "metadata": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "input_order": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}

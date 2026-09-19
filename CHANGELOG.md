@@ -5,6 +5,14 @@ All notable user-visible changes to Semantic Detector are documented here. The p
 ## [Unreleased]
 
 ### Added
+- Machine-readable JSON Schemas for messages, ground truth, predictions, and benchmark manifests.
+- Reproducible benchmark/dataset policies and experiment report template.
+- Coverage workflow with a 95% project-wide gate.
+- `scripts/dev_check.py` for a single local verification entry point.
+- Maintainer/CODEOWNERS and compatibility policy files.
+- Standalone JSONL schema validation utility.
+
+### Added
 
 - Public open-source repository structure and contribution guidance.
 - GitHub Actions test and package validation workflows.

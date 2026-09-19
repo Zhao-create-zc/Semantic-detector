@@ -1,0 +1,39 @@
+{
+  "benchmark_id": "example-protocol-message-type-v1",
+  "protocol": "ExampleProtocol",
+  "message_type": "Request",
+  "dataset": {
+    "name": "Replace with public dataset name",
+    "source": "https://example.invalid/dataset",
+    "license_or_terms": "Replace with actual license/terms",
+    "retrieved_at": "2026-09-19",
+    "sha256": null,
+    "redistributable": false,
+    "notes": "Template only; do not report results from this manifest."
+  },
+  "input": {
+    "messages_jsonl": "messages.jsonl",
+    "message_count": 1
+  },
+  "ground_truth": {
+    "file": "ground_truth.jsonl",
+    "field_count": 1,
+    "method": "manual protocol-spec annotation with independent review",
+    "reviewed_by": []
+  },
+  "config": {
+    "file": "config.json",
+    "sha256": null
+  },
+  "reporting": {
+    "required_metrics": [
+      "overall_accuracy",
+      "coverage",
+      "unknown_rate",
+      "covered_accuracy",
+      "fine_top1_accuracy",
+      "macro_f1"
+    ],
+    "error_analysis": true
+  }
+}

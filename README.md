@@ -1,5 +1,6 @@
 # Semantic Detector
 
+[![coverage gate](https://img.shields.io/badge/coverage%20gate-95%25-brightgreen)](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/coverage.yml)
 [![tests](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/tests.yml/badge.svg)](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/tests.yml)
 [![package](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/package.yml/badge.svg)](https://github.com/Zhao-create-zc/Semantic-detector/actions/workflows/package.yml)
 
@@ -174,6 +175,34 @@ python -m semantic_detector.cli evaluate <predictions_file> <ground_truth_file> 
 
 ---
 
+## 机器可读数据契约
+
+除 `docs/DATA_CONTRACT.md` 外，仓库提供 JSON Schema 供外部工具做结构级预检：
+
+- `schemas/message.schema.json`
+- `schemas/ground_truth.schema.json`
+- `schemas/semantic_prediction.schema.json`
+- `schemas/benchmark_manifest.schema.json`
+
+Schema 只覆盖可由单条 JSON 表达的结构约束；字段重叠、payload 长度关系和组级一致性仍以程序运行时校验为准。
+
+结构级预检示例：
+
+```bash
+python scripts/validate_jsonl_schema.py schemas/message.schema.json examples/messages.jsonl
+```
+
+## Benchmark 与真实协议实验
+
+真实协议实验必须记录数据来源、许可证/条款、哈希、预处理、真值方法和配置哈希。统一规范见：
+
+- [Benchmarking Protocol](docs/BENCHMARKING.md)
+- [Dataset and Trace Policy](docs/DATASET_POLICY.md)
+- [Experiment Report Template](docs/EXPERIMENT_REPORT_TEMPLATE.md)
+- [benchmarks/](benchmarks/README.md)
+
+开发者可运行 `python scripts/dev_check.py --coverage` 一次完成 JSON/语法检查、1975 项测试与 95% 覆盖率门槛验证。
+
 ## 开发与测试
 
 ```bash
@@ -182,7 +211,7 @@ pip install -r requirements.txt
 python -m pytest -q
 ```
 
-贡献前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。安全问题与敏感样本处理说明见 [SECURITY.md](SECURITY.md)。
+贡献前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。维护者与决策边界见 [MAINTAINERS.md](MAINTAINERS.md)，兼容性策略见 [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md)，安全问题与敏感样本处理说明见 [SECURITY.md](SECURITY.md)。
 
 ## 项目维护与研究复现
 
@@ -538,7 +567,7 @@ python -m pytest tests/integration/ -v
 python -m pytest -q
 ```
 
-当前全量测试：1970 passed，0 failed。
+当前全量测试：1975 passed，0 failed；总代码覆盖率 96.73%（CI 门槛 95%）。
 
 ---
 
