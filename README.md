@@ -26,7 +26,7 @@ Semantic Detector 是一个面向二进制协议逆向研究的规则型字段�
 ### 系统要求
 
 - Python 3.10+（在 3.14 上验证通过）
-- Windows / Linux / macOS
+- Windows / Linux / macOS（GitHub Actions 持续验证 Linux 3.10/3.12、Windows 3.12、macOS 3.12）
 
 ### 安装步骤
 
